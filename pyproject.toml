@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "gnakrydev"
+version = "0.1.0"
+description = ""
+authors = ["Boubacar Sidy Diallo <bsdiallo07@gmail.com>"]
+
+[tool.poetry.scripts]
+gnakrydev = "gnakrydev.main:cli"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+argparse = "^1.4.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
