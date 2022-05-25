@@ -1,0 +1,5 @@
+endpoints:
+  - name: "SG-Mooc"
+    url: https://mooc.savoirguinee.com/
+  - name: "SG-Auth Server"
+    url: https://auh.guineeapps.com/

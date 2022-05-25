@@ -1,53 +1,33 @@
 import argparse
-import json 
-import os
-import docker
+import json
+import requests
+import yaml
 
-# TODO THE TODOLIST
-# TODO Notifier
-# parser = argparse.ArgumentParser(description='Process some integers.')
-# parser.add_argument('integers', metavar='N', type=int, nargs='+',
-#                     help='an integer for the accumulator')
-# parser.add_argument('--sum', dest='accumulate', action='store_const',
-#                     const=sum, default=max,
-#                     help='sum the integers (default: find the max)')
+# Allow request for self signed https certificates
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-# args = parser.parse_args()
-# print(args.accumulate(args.integers))
+
+def health_check(gnakrydev_yml_file, apiKey):
+    gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/message?apiKey=" + apiKey
+    with open(gnakrydev_yml_file) as file:
+        endpoint_list = yaml.load(file, Loader=yaml.FullLoader)
+        for endpoint in endpoint_list["endpoints"]:
+            response = requests.get(endpoint["url"], verify=False)
+            if response.status_code == 200:
+                payload = {"id": endpoint["url"], "type": "success",
+                           "title": endpoint["name"], "category": "healthCheck"}
+                x = requests.post(gdev_broker_url, data=json.dumps(payload))
+            else:
+                payload = {"id": endpoint["url"], "type": "error",
+                           "title": endpoint["name"], "category": "healthCheck"}
+                x = requests.post(gdev_broker_url, data=json.dumps(payload))
 
 
 def cli():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("tz", help="The timezone")
-    parser.add_argument(
-        "-r",
-        "--repeat",
-        help="number of times to repeat the greeting",
-        default=1,
-        type=int,
-    )
-    parser.add_argument(
-        "-i",
-        "--interval",
-        help="time in seconds between iterations",
-        default=3,
-        type=int,
-    )
+    parser = argparse.ArgumentParser(description='Gnakrydev-cli client app')
+    parser.add_argument('--config', type=str, required=True)
+    parser.add_argument('--apikey', type=str, required=True)
+
     args = parser.parse_args()
-    
-    # greet(args.tz, args.repeat, args.interval)
-    
-    print(os.getenv('topic'))
-    
-    
-    ### Docker info and cli
-    try:
-        client = docker.from_env()
-        for image in client.images.list():
-            print(image.id)
-    except:
-        print("An exception occurred")
-    
-    username = input("Enter username:")
-    print("Username is: " + username)
-    
+    health_check(args.config, args.apikey)

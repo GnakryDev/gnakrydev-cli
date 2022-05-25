@@ -8,9 +8,12 @@ authors = ["Boubacar Sidy Diallo <bsdiallo07@gmail.com>"]
 gnakrydev = "gnakrydev.main:cli"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.6"
 argparse = "^1.4.0"
 docker = "^5.0.3"
+pycurl = "^7.44.1"
+requests = "^2.26.0"
+pyaml = "^21.10.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
