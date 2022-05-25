@@ -26,7 +26,11 @@ def health_check(gnakrydev_yml_file, apiKey):
 
 def cli():
     parser = argparse.ArgumentParser(description='Gnakrydev-cli client app')
+
+    # GnakryDev YML config file
     parser.add_argument('--config', type=str, required=True)
+
+    # apiKey available on the mobile-app
     parser.add_argument('--apikey', type=str, required=True)
 
     args = parser.parse_args()
