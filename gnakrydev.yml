@@ -1,5 +1,12 @@
 endpoints:
   - name: "SG-Mooc"
     url: https://mooc.savoirguinee.com/
-  - name: "SG-Auth Server"
-    url: https://auh.guineeapps.com/
+
+  - name: "Meteo-Guinée"
+    url: https://meteoguinee.net/
+
+  - name: "GUINEE-APPS"
+    url: https://apps.savoirguinee.com/
+
+  - name: "GS-Food"
+    url: https://food.guineeapps.com/
