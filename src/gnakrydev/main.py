@@ -17,11 +17,11 @@ def health_check(gnakrydev_yml_file, apiKey):
             if response.status_code == 200:
                 payload = {"id": endpoint["url"], "type": "success",
                            "title": endpoint["name"], "category": "healthCheck"}
-                x = requests.post(gdev_broker_url, data=json.dumps(payload))
+                requests.post(gdev_broker_url, data=json.dumps(payload))
             else:
                 payload = {"id": endpoint["url"], "type": "error",
                            "title": endpoint["name"], "category": "healthCheck"}
-                x = requests.post(gdev_broker_url, data=json.dumps(payload))
+                requests.post(gdev_broker_url, data=json.dumps(payload))
 
 
 def cli():
