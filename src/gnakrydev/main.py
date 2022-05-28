@@ -33,11 +33,10 @@ def health_check(params):
 def send_message(params):
 
     gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/message?apiKey=" + params.apikey
-    if params.type:
-        message_type = params.type
-    else:
-        message_type = "info"
-    payload = {"id": str(uuid.uuid4()), "type": message_type,
+    message_type = params.type if params.type else "info"
+    message_id = params.id if params.type else str(uuid.uuid4())
+
+    payload = {"id": message_id, "type": message_type,
                "title": params.title, "message": params.content, "category": "message"}
     requests.post(gdev_broker_url, data=json.dumps(payload))
 
@@ -61,6 +60,8 @@ def cli():
                         help="Show request details in stdout")
     message.add_argument('--apikey', type=str, required=True,
                          help="apiKey available on the mobile-app")
+    #
+    message.add_argument('--id', type=str, help="Message ID")
     #
     message.add_argument('--title', type=str,
                          required=True, help="Message title")
