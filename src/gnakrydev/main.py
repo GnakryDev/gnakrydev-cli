@@ -49,7 +49,7 @@ def cli():
 
     # GnakryDev YML config file
     health.add_argument('--config', type=str,
-                        required=True, help="YML config file")
+                        required=True, help="YAML config file path")
 
     # ApiKey available on the mobile-app
     health.add_argument('--apikey', type=str, required=True,
