@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gnakrydev"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Boubacar Sidy Diallo <bsdiallo07@gmail.com>"]
 
@@ -13,6 +13,7 @@ argparse = "^1.4.0"
 pycurl = "^7.44.1"
 requests = "^2.26.0"
 pyaml = "^21.10.1"
+uuid = "^1.30"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
