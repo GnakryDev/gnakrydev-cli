@@ -21,7 +21,7 @@ usage: gnakrydev health [-h] --config CONFIG --apikey APIKEY [--verbose]
 
 optional arguments:
   -h, --help       show this help message and exit
-  --config CONFIG  YML config file
+  --config CONFIG  YML config file path
   --apikey APIKEY  apiKey available on the mobile-app
   --verbose        Show request details in stdout
 ```
