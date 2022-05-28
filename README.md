@@ -3,7 +3,7 @@
 CLI tool in order to interact with the gnakrydev mobile app.
 
 ## Simple notification
-
+### Usage
 ``` bash
 usage: gnakrydev message [-h] --apikey APIKEY --title TITLE --content CONTENT [--type TYPE]
 
@@ -15,6 +15,7 @@ optional arguments:
   --type TYPE        Message type: info, warning, success, error. Default= info
 ```
 ## Website Health-Check
+### Usage
 ``` bash
 usage: gnakrydev health [-h] --config CONFIG --apikey APIKEY [--verbose]
 
