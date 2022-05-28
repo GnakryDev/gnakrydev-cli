@@ -25,6 +25,7 @@ optional arguments:
   --verbose        Show request details in stdout
 ```
 
+### YML config file example
 ``` yaml
 endpoints:
   - name: "SG-Mooc"
