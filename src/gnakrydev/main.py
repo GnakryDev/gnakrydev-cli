@@ -3,11 +3,16 @@ import json
 import requests
 import yaml
 import uuid
+import logging
+import sys
 # Allow request for self signed https certificates
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 VERSION = "0.1.1"
+
+# logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 def app_version():
@@ -24,6 +29,8 @@ def health_check(params):
                 payload = {"id": endpoint["url"], "type": "success",
                            "title": endpoint["name"], "category": "healthCheck"}
                 requests.post(gdev_broker_url, data=json.dumps(payload))
+                logger.debug(endpoint["name"] + " => " +
+                             endpoint["url"] + ":  🆗 ✅ 😀")
                 if params.verbose:
                     print(endpoint["name"] + " => " +
                           endpoint["url"] + ":  🆗 ✅ 😀")
@@ -31,6 +38,8 @@ def health_check(params):
                 payload = {"id": endpoint["url"], "type": "error",
                            "title": endpoint["name"], "category": "healthCheck"}
                 requests.post(gdev_broker_url, data=json.dumps(payload))
+                logger.debug(endpoint["name"] + " => " +
+                             endpoint["url"] + ":  ❌ 😱 🚨")
                 if params.verbose:
                     print(endpoint["name"] + " => " +
                           endpoint["url"] + ":  ❌ 😱 🚨")

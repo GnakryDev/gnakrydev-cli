@@ -133,14 +133,6 @@ python-versions = "*"
 PyYAML = "*"
 
 [[package]]
-name = "pycurl"
-version = "7.45.1"
-description = "PycURL -- A Python Interface To The cURL library"
-category = "main"
-optional = false
-python-versions = ">=3.5"
-
-[[package]]
 name = "pyparsing"
 version = "3.0.7"
 description = "Python parsing module"
@@ -252,7 +244,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "bd885ae37a42187372ce4b46ef8b4f2e2a327d933d72655357f33dcf007b3768"
+content-hash = "6d5c342e7849cb6b31d2f70bfaf79718ba51ef714fe435179993c95d5429250c"
 
 [metadata.files]
 argparse = [
@@ -306,9 +298,6 @@ py = [
 pyaml = [
     {file = "pyaml-21.10.1-py2.py3-none-any.whl", hash = "sha256:19985ed303c3a985de4cf8fd329b6d0a5a5b5c9035ea240eccc709ebacbaf4a0"},
     {file = "pyaml-21.10.1.tar.gz", hash = "sha256:c6519fee13bf06e3bb3f20cacdea8eba9140385a7c2546df5dbae4887f768383"},
-]
-pycurl = [
-    {file = "pycurl-7.45.1.tar.gz", hash = "sha256:a863ad18ff478f5545924057887cdae422e1b2746e41674615f687498ea5b88a"},
 ]
 pyparsing = [
     {file = "pyparsing-3.0.7-py3-none-any.whl", hash = "sha256:a6c06a88f252e6c322f65faf8f418b16213b51bdfaece0524c1c1bc30c63c484"},
