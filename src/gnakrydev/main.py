@@ -7,6 +7,12 @@ import uuid
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
+VERSION = "0.1.1"
+
+
+def app_version():
+    print("gnakrydev: ", VERSION)
+
 
 def health_check(params):
     gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/message?apiKey=" + params.apikey
@@ -44,6 +50,7 @@ def send_message(params):
 def cli():
     parser = argparse.ArgumentParser(description='Gnakrydev-cli  app')
     subparser = parser.add_subparsers(dest='command')
+    version = subparser.add_parser('version')
     health = subparser.add_parser('health')
     message = subparser.add_parser('message')
 
@@ -80,3 +87,5 @@ def cli():
         health_check(args)
     elif args.command == 'message':
         send_message(args)
+    elif args.command == 'version':
+        app_version()
