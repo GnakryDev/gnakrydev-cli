@@ -1,4 +1,4 @@
-from email import feedparser
+import feedparser
 import json
 import requests
 
