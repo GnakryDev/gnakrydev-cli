@@ -1,22 +1,19 @@
 import argparse
+import feedparser
 import json
 import requests
 import yaml
 import uuid
 import logging
 import sys
+from .cli_package.library import ping_mobile_app, cve_feed, app_version
 # Allow request for self signed https certificates
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-VERSION = "0.1.1"
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-
-def app_version():
-    print("gnakrydev: ", VERSION)
 
 
 def health_check(params):
@@ -59,42 +56,56 @@ def send_message(params):
 def cli():
     parser = argparse.ArgumentParser(description='Gnakrydev-cli  app')
     subparser = parser.add_subparsers(dest='command')
-    version = subparser.add_parser('version')
-    health = subparser.add_parser('health')
-    message = subparser.add_parser('message')
+    version = subparser.add_parser(
+        'version', help="Show the app version")
+    health = subparser.add_parser(
+        'health', help="Perform a health-check of the endpoints listed on the YML file")
+    message = subparser.add_parser(
+        'message', help="Send a notification to the Gnakrydev Mobile-APP")
+    cve = subparser.add_parser('cve', help="List CERT-FR rss recents  vulns")
+    ping = subparser.add_parser(
+        'ping', help="Send a ping message to the  Gnakrydev Mobile-APP")
 
     # GnakryDev YML config file
     health.add_argument('--config', type=str,
-                        required=True, help="YAML config file path")
+                        required=True, metavar="", help="YAML config file path")
 
     # ApiKey available on the mobile-app
-    health.add_argument('--apikey', type=str, required=True,
+    health.add_argument('--apikey', type=str, required=True, metavar="",
                         help="apiKey available on the mobile-app")
-
+    # ApiKey available on the mobile-app
+    ping.add_argument('--apikey', type=str, required=True, metavar="",
+                      help="apiKey available on the mobile-app")
     #
     health.add_argument('--verbose', action='store_true',
                         help="Show request details in stdout")
-    message.add_argument('--apikey', type=str, required=True,
+    #
+    message.add_argument('--apikey', type=str, required=True, metavar="",
                          help="apiKey available on the mobile-app")
     #
-    message.add_argument('--id', type=str, help="Message ID")
+    message.add_argument('--id', type=str, metavar="",
+                         help="Message ID, Default= ramdom uuid")
     #
-    message.add_argument('--title', type=str,
+    message.add_argument('--title', type=str, metavar="",
                          required=True, help="Message title")
 
     # Message content
-    message.add_argument('--content', type=str,
+    message.add_argument('--content', type=str, metavar="",
                          required=True, help="Message content")
 
     # Message type
-    message.add_argument('--type', type=str,
+    message.add_argument('--type', type=str, metavar="",
                          help="Message type:  info, warning, success, error. Default= info")
 
     args = parser.parse_args()
 
-    if args.command == 'health':
+    if args.command == 'version':
+        app_version()
+    elif args.command == 'health':
         health_check(args)
     elif args.command == 'message':
         send_message(args)
-    elif args.command == 'version':
-        app_version()
+    elif args.command == 'cve':
+        cve_feed()
+    elif args.command == 'ping':
+        ping_mobile_app(args)

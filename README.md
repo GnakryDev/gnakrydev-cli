@@ -7,7 +7,10 @@ CLI tool in order to interact with the gnakrydev mobile app.
 pip install https://gnakrydev.github.io/cli/gnakrydev-0.1.1-py3-none-any.whl
 ```
 ## Simple notification
+
 ### Usage
+
+#### Bash
 ``` bash
 usage: gnakrydev message [-h] --apikey APIKEY --title TITLE --content CONTENT [--type TYPE]
 
@@ -17,6 +20,11 @@ optional arguments:
   --title TITLE      Message title
   --content CONTENT  Message content
   --type TYPE        Message type: info, warning, success, error. Default= info
+```
+
+#### Docker
+```
+docker run -it --rm  gnakrydev  version
 ```
 ## Website Health-Check
 ### Usage
