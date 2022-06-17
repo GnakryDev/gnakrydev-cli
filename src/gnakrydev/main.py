@@ -6,7 +6,7 @@ import yaml
 import uuid
 import logging
 import sys
-from .cli_package.library import ping_mobile_app, cve_feed, app_version
+from .cli_package.library import ping_mobile_app, cve_feed, app_version, health_check, send_message
 # Allow request for self signed https certificates
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -14,43 +14,6 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-
-def health_check(params):
-    gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/message?apiKey=" + params.apikey
-    with open(params.config) as file:
-        endpoint_list = yaml.load(file, Loader=yaml.FullLoader)
-        for endpoint in endpoint_list["endpoints"]:
-            response = requests.get(endpoint["url"], verify=False)
-            if response.status_code == 200:
-                payload = {"id": endpoint["url"], "type": "success",
-                           "title": endpoint["name"], "category": "healthCheck"}
-                requests.post(gdev_broker_url, data=json.dumps(payload))
-                logger.debug(endpoint["name"] + " => " +
-                             endpoint["url"] + ":  🆗 ✅ 😀")
-                if params.verbose:
-                    print(endpoint["name"] + " => " +
-                          endpoint["url"] + ":  🆗 ✅ 😀")
-            else:
-                payload = {"id": endpoint["url"], "type": "error",
-                           "title": endpoint["name"], "category": "healthCheck"}
-                requests.post(gdev_broker_url, data=json.dumps(payload))
-                logger.debug(endpoint["name"] + " => " +
-                             endpoint["url"] + ":  ❌ 😱 🚨")
-                if params.verbose:
-                    print(endpoint["name"] + " => " +
-                          endpoint["url"] + ":  ❌ 😱 🚨")
-
-
-def send_message(params):
-
-    gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/message?apiKey=" + params.apikey
-    message_type = params.type if params.type else "info"
-    message_id = params.id if params.type else str(uuid.uuid4())
-
-    payload = {"id": message_id, "type": message_type,
-               "title": params.title, "message": params.content, "category": "message"}
-    requests.post(gdev_broker_url, data=json.dumps(payload))
 
 
 def cli():
