@@ -10,6 +10,7 @@ import uuid
 import logging
 import sys
 from .Konstants import VERSION
+import docker
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -74,3 +75,16 @@ def send_message(params):
 def webhook_message(apikey, payload):
     gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/message?apiKey=" + apikey
     requests.post(gdev_broker_url, data=json.dumps(payload))
+
+
+def docker_container_health(params):
+    client = docker.from_env()
+    for container in client.containers.list(all=True):
+        if container.status == "running":
+            payload = {"id": container.name, "type": "success",
+                       "title": "🐳 Docker: " + container.name, "category": "healthCheck"}
+            webhook_message(params.apikey, payload)
+        elif container.status == "exited":
+            payload = {"id": container.name, "type": "error",
+                       "title": "🐳 Docker: " + container.name, "category": "healthCheck"}
+            webhook_message(params.apikey, payload)
