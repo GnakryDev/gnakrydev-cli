@@ -4,7 +4,7 @@ CLI tool in order to interact with the gnakrydev mobile app.
 
 ## Installation
 ``` bash
-pip install https://gnakrydev.github.io/cli/gnakrydev-0.1.1-py3-none-any.whl
+pip install https://gnakrydev.github.io/cli/gnakrydev-0.1.3-py3-none-any.whl
 ```
 ## Simple notification
 
