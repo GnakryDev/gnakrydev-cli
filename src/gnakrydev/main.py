@@ -6,7 +6,7 @@ import yaml
 import uuid
 import logging
 import sys
-from .cli_package.library import ping_mobile_app, cve_feed, app_version, health_check, send_message, docker_container_health
+from .cli_package.library import ping_mobile_app, cve_feed, app_version, health_check, send_message, docker_sdk
 # Allow request for self signed https certificates
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -90,5 +90,4 @@ def cli():
     elif args.command == 'ping':
         ping_mobile_app(args)
     elif args.command == 'docker':
-        # ping_mobile_app(args)
-        docker_container_health(args)
+        docker_sdk(args)

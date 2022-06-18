@@ -77,14 +77,25 @@ def webhook_message(apikey, payload):
     requests.post(gdev_broker_url, data=json.dumps(payload))
 
 
+def docker_sdk(params):
+    if params.c_status:
+        docker_container_health(params)
+
+
 def docker_container_health(params):
-    client = docker.from_env()
-    for container in client.containers.list(all=True):
-        if container.status == "running":
-            payload = {"id": container.name, "type": "success",
-                       "title": "🐳 Docker: " + container.name, "category": "healthCheck"}
-            webhook_message(params.apikey, payload)
-        elif container.status == "exited":
-            payload = {"id": container.name, "type": "error",
-                       "title": "🐳 Docker: " + container.name, "category": "healthCheck"}
-            webhook_message(params.apikey, payload)
+    try:
+        client = docker.from_env()
+    except docker.errors.DockerException:
+        sys.exit("Error connecting to docker. Check if docker is running")
+    try:
+        for container in client.containers.list(all=True):
+            if container.status == "running":
+                payload = {"id": container.name, "type": "success",
+                           "title": "🐳 Docker: " + container.name, "category": "healthCheck"}
+                webhook_message(params.apikey, payload)
+            elif container.status == "exited":
+                payload = {"id": container.name, "type": "error",
+                           "title": "🐳 Docker: " + container.name, "category": "healthCheck"}
+                webhook_message(params.apikey, payload)
+    except docker.errors.APIError:
+        sys.exit("Error connecting to docker. Check if docker is running")
