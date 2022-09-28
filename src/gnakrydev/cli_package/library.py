@@ -110,7 +110,7 @@ def docker_info(params):
     except docker.errors.DockerException:
         sys.exit("Error connecting to docker. Check if docker is running")
     try:
-        print(client.info())
+        # print(client.info())
         gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/docker?apiKey=" + params.apikey
         payload = client.info()
         requests.post(gdev_broker_url, data=json.dumps(payload))
