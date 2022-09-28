@@ -74,6 +74,8 @@ def cli():
 
     docker.add_argument('--c_status', action='store_true',
                         help="Show and send containers status")
+    docker.add_argument('--info', action='store_true',
+                        help="Show and send containers status")
 
     # Load all arguments from the CLI
     args = parser.parse_args()

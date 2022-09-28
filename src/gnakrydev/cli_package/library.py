@@ -24,10 +24,11 @@ def app_version():
 
 
 def ping_mobile_app(params):
-    message_type = "ping"
+    gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/cmd?apiKey=" + params.apikey
+    message_type = "PING"
     message_id = "cmd"
     payload = {"id": message_id, "type": message_type}
-    webhook_message(params.apikey, payload)
+    requests.post(gdev_broker_url, data=json.dumps(payload))
 
 
 def cve_feed():
@@ -80,6 +81,8 @@ def webhook_message(apikey, payload):
 def docker_sdk(params):
     if params.c_status:
         docker_container_health(params)
+    if params.info:
+        docker_info(params)
 
 
 def docker_container_health(params):
@@ -97,5 +100,19 @@ def docker_container_health(params):
                 payload = {"id": container.name, "type": "error",
                            "title": "🐳 Docker: " + container.name, "category": "healthCheck"}
                 webhook_message(params.apikey, payload)
+    except docker.errors.APIError:
+        sys.exit("Error connecting to docker. Check if docker is running")
+
+
+def docker_info(params):
+    try:
+        client = docker.from_env()
+    except docker.errors.DockerException:
+        sys.exit("Error connecting to docker. Check if docker is running")
+    try:
+        print(client.info())
+        gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/docker?apiKey=" + params.apikey
+        payload = client.info()
+        requests.post(gdev_broker_url, data=json.dumps(payload))
     except docker.errors.APIError:
         sys.exit("Error connecting to docker. Check if docker is running")
