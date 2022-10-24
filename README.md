@@ -4,7 +4,7 @@ CLI tool in order to interact with the gnakrydev mobile app.
 
 ## Installation
 ``` bash
-pip install --force-reinstall https://raw.githubusercontent.com/GnakryDev/gnakrydev-cli/main/release/gnakrydev-0.1.3-py3-none-any.whl
+pip install https://github.com/GnakryDev/gnakrydev-cli/raw/main/release/gnakrydev-0.1.3-py3-none-any.whl --force-reinstall
 ```
 ## Simple notification
 
