@@ -1,11 +1,7 @@
 import argparse
 import feedparser
-import json
 import requests
-import yaml
-import uuid
 import logging
-import sys
 from .cli_package.library import ping_mobile_app, cve_feed, app_version, health_check, send_message, docker_sdk
 # Allow request for self signed https certificates
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -75,7 +71,11 @@ def cli():
     docker.add_argument('--c_status', action='store_true',
                         help="Show and send containers status")
     docker.add_argument('--info', action='store_true',
-                        help="Show and send containers status")
+                        help="docker host infos")
+    docker.add_argument('--compose_scan', action='store_true',
+                        help="docker-compose scan")
+
+                        
 
     # Load all arguments from the CLI
     args = parser.parse_args()

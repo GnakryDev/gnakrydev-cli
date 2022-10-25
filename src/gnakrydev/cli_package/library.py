@@ -83,6 +83,8 @@ def docker_sdk(params):
         docker_container_health(params)
     if params.info:
         docker_info(params)
+    if params.compose_scan:
+        docker_cp_scan(params)
 
 
 def docker_container_health(params):
@@ -116,3 +118,9 @@ def docker_info(params):
         requests.post(gdev_broker_url, data=json.dumps(payload))
     except docker.errors.APIError:
         sys.exit("Error connecting to docker. Check if docker is running")
+
+#Scan th docker-compose file
+def docker_cp_scan(params):
+    with open(params.config) as file:
+        dc_item = yaml.load(file, Loader=yaml.FullLoader)
+        
