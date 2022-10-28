@@ -146,15 +146,9 @@ def docker_cp_scan(params):
 
 
 def docker_df_generator(params):
-    print("dockerfile gn")
     file_name = os.path.join(os.path.join(
-        os.path.dirname(__file__)), '../../../templates_dockerfiles/node')
+        os.path.dirname(__file__)), 'templates_dockerfiles/node')
 
     with open(file_name, encoding='utf-8') as src:
-        with open("Dockerfile", "w") as dest:
+        with open("Dockerfile-red", "w") as dest:
             dest.write(src.read())
-    print(os.path.dirname(os.path.realpath(__file__)))
-    print(os.getcwd())
-    # print(os.path.dirname(__file__))
-    # response = wget.download(
-    #     "https://raw.githubusercontent.com/GnakryDev/gnakrydev-cli/main/Dockerfile", "Dockerfile-node")
