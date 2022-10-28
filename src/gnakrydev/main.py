@@ -6,7 +6,9 @@ from .cli_package.library import ping_mobile_app, cve_feed, app_version, health_
 # Allow request for self signed https certificates
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+import os
 
+print(os.listdir())
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -73,6 +75,8 @@ def cli():
     docker.add_argument('--info', action='store_true',
                         help="docker host infos")
     docker.add_argument('--compose_scan', action='store_true',
+                        help="docker-compose scan")
+    docker.add_argument('--gen_dockerfile', action='store_true',
                         help="docker-compose scan")
 
                         

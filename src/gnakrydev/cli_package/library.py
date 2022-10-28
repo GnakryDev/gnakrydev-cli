@@ -85,6 +85,9 @@ def docker_sdk(params):
         docker_info(params)
     if params.compose_scan:
         docker_cp_scan(params)
+    
+    if params.gen_dockerfile:
+        docker_df_generator(params)
 
 
 def docker_container_health(params):
@@ -124,9 +127,11 @@ def docker_cp_scan(params):
     with open(params.config) as file:
         dc_item = yaml.load(file, Loader=yaml.FullLoader)
 
-#Generate th docker-compose file
-def docker_cp_generator(params):
-    response = wget.download(URL, "docker-compose.yml")
-    with open(params.config) as file:
-        dc_item = yaml.load(file, Loader=yaml.FullLoader)
+#Generate the dockerfile
+def docker_df_generator(params):
+    print("dockerfile gn")
+    with open("templates_dockerfiles/node", encoding = 'utf-8') as src:
+        with open("Dockerfile", "w") as dest:
+            dest.write(src.read())
+   
         
