@@ -1,4 +1,5 @@
 import feedparser
+import os
 import json
 import requests
 import argparse
@@ -6,7 +7,8 @@ import feedparser
 import json
 import requests
 import yaml
-import uuid, wget
+import uuid
+import wget
 import logging
 import sys
 from .Konstants import VERSION
@@ -38,6 +40,17 @@ def cve_feed():
         print("-------------------------------------------------")
         print(feed.title)
         print(feed.link)
+
+
+# TODO
+def cli_process(params):
+    gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/cmd?apiKey=" + params.apikey
+    message_type = "CLI-PROCESS"
+    message_id = params.id if params.id else str(uuid.uuid4())
+    payload = {"id": message_id, "type": message_type,
+               "title": params.title, "message": params.content, "category": "message"}
+    # payload = {"id": message_id, "type": message_type}
+    requests.post(gdev_broker_url, data=json.dumps(payload))
 
 
 def health_check(params):
@@ -85,7 +98,7 @@ def docker_sdk(params):
         docker_info(params)
     if params.compose_scan:
         docker_cp_scan(params)
-    
+
     if params.gen_dockerfile:
         docker_df_generator(params)
 
@@ -122,16 +135,26 @@ def docker_info(params):
     except docker.errors.APIError:
         sys.exit("Error connecting to docker. Check if docker is running")
 
-#Scan th docker-compose file
+# Scan th docker-compose file
+
+
 def docker_cp_scan(params):
     with open(params.config) as file:
         dc_item = yaml.load(file, Loader=yaml.FullLoader)
 
-#Generate the dockerfile
+# Generate the dockerfile
+
+
 def docker_df_generator(params):
     print("dockerfile gn")
-    with open("templates_dockerfiles/node", encoding = 'utf-8') as src:
+    file_name = os.path.join(os.path.join(
+        os.path.dirname(__file__)), '../../../templates_dockerfiles/node')
+
+    with open(file_name, encoding='utf-8') as src:
         with open("Dockerfile", "w") as dest:
             dest.write(src.read())
-   
-        
+    print(os.path.dirname(os.path.realpath(__file__)))
+    print(os.getcwd())
+    # print(os.path.dirname(__file__))
+    # response = wget.download(
+    #     "https://raw.githubusercontent.com/GnakryDev/gnakrydev-cli/main/Dockerfile", "Dockerfile-node")
