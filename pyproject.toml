@@ -15,6 +15,7 @@ pyaml = "^21.10.1"
 uuid = "^1.30"
 feedparser = "^6.0.10"
 docker = "^5.0.3"
+wget = "^3.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

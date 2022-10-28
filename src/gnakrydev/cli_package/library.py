@@ -6,7 +6,7 @@ import feedparser
 import json
 import requests
 import yaml
-import uuid
+import uuid, wget
 import logging
 import sys
 from .Konstants import VERSION
@@ -121,6 +121,12 @@ def docker_info(params):
 
 #Scan th docker-compose file
 def docker_cp_scan(params):
+    with open(params.config) as file:
+        dc_item = yaml.load(file, Loader=yaml.FullLoader)
+
+#Generate th docker-compose file
+def docker_cp_generator(params):
+    response = wget.download(URL, "docker-compose.yml")
     with open(params.config) as file:
         dc_item = yaml.load(file, Loader=yaml.FullLoader)
         
