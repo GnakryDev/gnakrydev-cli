@@ -20,6 +20,11 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 
+try:
+    client = docker.from_env()
+except docker.errors.DockerException:
+    sys.exit("Error connecting to docker. Check if docker is running")
+
 
 def app_version():
     print("gnakrydev: ", VERSION)
@@ -90,6 +95,29 @@ def webhook_message(apikey, payload):
     gdev_broker_url = "https://broker-api.gnakrydev.com/webhooks/message?apiKey=" + apikey
     requests.post(gdev_broker_url, data=json.dumps(payload))
 
+################
+################
+## Docker ######
+################
+def list_containers():
+    containers = client.containers.list(all=True)
+    for container in containers:
+        print(f"Container ID: {container.short_id}, Image: {container.image.tags[0]}, Status: {container.status}")
+
+def list_images():
+    images = client.images.list()
+    for image in images:
+        print(f"Image ID: {image.short_id}, Repository: {image.tags[0]}, Size: {image.attrs['Size'] / 1000000:.2f} MB")
+
+def stop_container(container_id):
+    container = client.containers.get(container_id)
+    container.stop()
+
+def remove_container(container_id):
+    container = client.containers.get(container_id)
+    container.remove()
+######################
+######################
 
 def docker_sdk(params):
     if params.c_status:
@@ -137,13 +165,11 @@ def docker_info(params):
 
 # Scan th docker-compose file
 
-
 def docker_cp_scan(params):
     with open(params.config) as file:
         dc_item = yaml.load(file, Loader=yaml.FullLoader)
 
 # Generate the dockerfile
-
 
 def docker_df_generator(params):
     file_name = os.path.join(os.path.join(
